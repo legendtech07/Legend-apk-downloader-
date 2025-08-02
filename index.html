@@ -2,20 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Apk Downloader-by Legend Tech team</title>
+  <title>Apk Downloader - by Legend Tech team</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-6746078240310160" />
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-.apk-downloader {
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #fff;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .apk-downloader {
       background: rgba(30, 30, 30, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 30px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       margin-top: 20px;
+    }
+
+    .apk-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .apk-header h3 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #25D366;
+    }
+
+    .apk-header p {
+      margin: 5px 0 0;
+      color: #aaa;
+    }
+
+    .search-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .input-group {
+      width: 100%;
     }
 
     .search-input {
@@ -26,6 +61,12 @@
       border-radius: 12px;
       color: #fff;
       font-size: 1rem;
+      transition: border 0.3s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #25D366;
     }
 
     .search-btn {
@@ -41,6 +82,12 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
     }
 
     .spinner {
@@ -73,6 +120,12 @@
       text-align: center;
       margin-top: 20px;
       display: none;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .app-thumbnail {
@@ -80,79 +133,232 @@
       height: 200px;
       object-fit: contain;
       margin-bottom: 10px;
+      border-radius: 12px;
+    }
+
+    .app-info {
+      margin-top: 15px;
+    }
+
+    .app-title {
+      margin: 0 0 10px;
+      color: #fff;
+    }
+
+    .app-version {
+      color: #aaa;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
     }
 
     .download-btn {
       margin-top: 10px;
       display: inline-block;
       background: #25D366;
-      padding: 10px 20px;
+      padding: 12px 25px;
       color: white;
       border-radius: 10px;
       text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .download-btn:hover {
+      background: #128C7E;
+      transform: translateY(-2px);
+    }
+
+    .popular-apps {
+      margin-top: 30px;
+    }
+
+    .popular-apps h4 {
+      text-align: center;
+      color: #aaa;
+      margin-bottom: 15px;
+    }
+
+    .app-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .app-badge {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .app-badge:hover {
+      background: rgba(37, 211, 102, 0.2);
     }
 </style>
+</head>
+<body>
+  <div class="apk-downloader">
+    <div class="apk-header">
+      <h3>APK Downloader</h3>
+      <p>Download APK files safely and securely</p>
+    </div>
 
-<div class="apk-downloader">
-        <div class="apk-header">
-          <h3>APK Downloader</h3>
-          <p>Download APK files safely and securely</p>
-        </div>
-
-        <form class="search-form" id="searchForm">
-          <div class="input-group">
-            <input type="text" class="search-input" id="appQuery" 
-                   placeholder="Search for apps (e.g. WhatsApp, Instagram)" required>
-          </div>
-          <button type="submit" class="search-btn">
-            <i class="fas fa-search"></i> Search APK
-          </button>
-        </form>
-
-        <div class="spinner" id="loadingSpinner"></div>
-        <div class="error-message" id="errorMessage"></div>
-
-        <div class="app-card" id="results">
-          <img src="" class="app-thumbnail" id="appThumbnail">
-          <div class="app-info">
-            <h3 class="app-title" id="appTitle"></h3>
-            <a href="#" class="download-btn" id="downloadLink">
-              <i class="fas fa-download"></i> Download APK
-            </a>
-          </div>
-        </div>
+    <form class="search-form" id="searchForm">
+      <div class="input-group">
+        <input type="text" class="search-input" id="appQuery" 
+               placeholder="Search for apps (e.g. WhatsApp, Instagram, Facebook)" required>
       </div>
+      <button type="submit" class="search-btn">
+        <i class="fas fa-search"></i> Search APK
+      </button>
+    </form>
+
+    <div class="popular-apps">
+      <h4>Popular Apps</h4>
+      <div class="app-badges">
+        <div class="app-badge" onclick="searchPopularApp('WhatsApp')">WhatsApp</div>
+        <div class="app-badge" onclick="searchPopularApp('Instagram')">Instagram</div>
+        <div class="app-badge" onclick="searchPopularApp('Facebook')">Facebook</div>
+        <div class="app-badge" onclick="searchPopularApp('TikTok')">TikTok</div>
+        <div class="app-badge" onclick="searchPopularApp('Snapchat')">Snapchat</div>
+        <div class="app-badge" onclick="searchPopularApp('Twitter')">Twitter</div>
+        <div class="app-badge" onclick="searchPopularApp('Spotify')">Spotify</div>
+        <div class="app-badge" onclick="searchPopularApp('Netflix')">Netflix</div>
+      </div>
+    </div>
+
+    <div class="spinner" id="loadingSpinner"></div>
+    <div class="error-message" id="errorMessage"></div>
+
+    <div class="app-card" id="results">
+      <img src="" class="app-thumbnail" id="appThumbnail">
+      <div class="app-info">
+        <h3 class="app-title" id="appTitle"></h3>
+        <p class="app-version" id="appVersion"></p>
+        <a href="#" class="download-btn" id="downloadLink" target="_blank">
+          <i class="fas fa-download"></i> Download APK
+        </a>
+      </div>
+    </div>
+  </div>
 
 <script>
-// APK search functionality
-      const searchForm = document.getElementById('searchForm');
-      if (searchForm) {
-        searchForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const query = document.getElementById('appQuery').value.trim();
-          if (query) {
-            document.getElementById('loadingSpinner').style.display = 'block';
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('results').style.display = 'none';
-
-            // Simulate API call (replace with actual API call)
-            setTimeout(() => {
-              document.getElementById('loadingSpinner').style.display = 'none';
-              
-              // This is a simulation - replace with actual API response handling
-              if (query.toLowerCase().includes('whatsapp')) {
-                document.getElementById('appThumbnail').src = 'https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg';
-                document.getElementById('appTitle').textContent = 'WhatsApp Messenger';
-                document.getElementById('downloadLink').href = '#';
-                document.getElementById('results').style.display = 'block';
-              } else {
-                document.getElementById('errorMessage').textContent = 'APK not found. Please try another app.';
-                document.getElementById('errorMessage').style.display = 'block';
-              }
-            }, 1500);
-          }
-        });
+    // Database of supported apps with their details
+    const appDatabase = {
+      whatsapp: {
+        name: "WhatsApp Messenger",
+        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg",
+        version: "Latest Version: 2.23.25.84",
+        downloadUrl: "https://example.com/download/whatsapp"
+      },
+      instagram: {
+        name: "Instagram",
+        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg",
+        version: "Latest Version: 292.0.0.0.32",
+        downloadUrl: "https://example.com/download/instagram"
+      },
+      facebook: {
+        name: "Facebook",
+        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
+        version: "Latest Version: 420.0.0.35.119",
+        downloadUrl: "https://example.com/download/facebook"
+      },
+      tiktok: {
+        name: "TikTok",
+        thumbnail: "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
+        version: "Latest Version: 31.2.4",
+        downloadUrl: "https://example.com/download/tiktok"
+      },
+      snapchat: {
+        name: "Snapchat",
+        thumbnail: "https://upload.wikimedia.org/wikipedia/fr/0/06/Snapchat_logo.png",
+        version: "Latest Version: 12.50.0.38",
+        downloadUrl: "https://example.com/download/snapchat"
+      },
+      twitter: {
+        name: "Twitter (X)",
+        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Logo_of_Twitter.svg",
+        version: "Latest Version: 10.12.0",
+        downloadUrl: "https://example.com/download/twitter"
+      },
+      spotify: {
+        name: "Spotify",
+        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg",
+        version: "Latest Version: 8.8.96.364",
+        downloadUrl: "https://example.com/download/spotify"
+      },
+      netflix: {
+        name: "Netflix",
+        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/7/77/Netflix_icon.svg",
+        version: "Latest Version: 8.91.0",
+        downloadUrl: "https://example.com/download/netflix"
+      },
+      youtube: {
+        name: "YouTube",
+        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/7/72/YouTube_social_white_square_%282017%29.svg",
+        version: "Latest Version: 18.45.43",
+        downloadUrl: "https://example.com/download/youtube"
+      },
+      telegram: {
+        name: "Telegram",
+        thumbnail: "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg",
+        version: "Latest Version: 10.3.3",
+        downloadUrl: "https://example.com/download/telegram"
       }
+    };
+
+    // APK search functionality
+    const searchForm = document.getElementById('searchForm');
+    if (searchForm) {
+      searchForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const query = document.getElementById('appQuery').value.trim().toLowerCase();
+        if (query) {
+          searchApp(query);
+        }
+      });
+    }
+
+    // Function to search for an app
+    function searchApp(query) {
+      document.getElementById('loadingSpinner').style.display = 'block';
+      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('results').style.display = 'none';
+
+      // Simulate API call (replace with actual API call)
+      setTimeout(() => {
+        document.getElementById('loadingSpinner').style.display = 'none';
+        
+        // Check if the app exists in our database
+        let foundApp = null;
+        for (const [key, app] of Object.entries(appDatabase)) {
+          if (query.includes(key) || app.name.toLowerCase().includes(query)) {
+            foundApp = app;
+            break;
+          }
+        }
+
+        if (foundApp) {
+          document.getElementById('appThumbnail').src = foundApp.thumbnail;
+          document.getElementById('appTitle').textContent = foundApp.name;
+          document.getElementById('appVersion').textContent = foundApp.version;
+          document.getElementById('downloadLink').href = foundApp.downloadUrl;
+          document.getElementById('results').style.display = 'block';
+        } else {
+          document.getElementById('errorMessage').textContent = 'APK not found. Please try another app.';
+          document.getElementById('errorMessage').style.display = 'block';
+        }
+      }, 1500);
+    }
+
+    // Function to search popular apps
+    function searchPopularApp(appName) {
+      document.getElementById('appQuery').value = appName;
+      searchApp(appName.toLowerCase());
+    }
 </script>
 </body>
 </html>
