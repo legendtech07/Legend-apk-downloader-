@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Apk Downloader-by Legend Tech team</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-adsense-account" content="ca-pub-6746078240310160" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+.apk-downloader {
+      background: rgba(30, 30, 30, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin-top: 20px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 15px 20px;
+      background: #1E1E1E;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .search-btn {
+      background: linear-gradient(to right, #25D366, #128C7E);
+      border: none;
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.1);
+      border-top: 5px solid #25D366;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: none;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      color: #ff5c5c;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .app-card {
+      background: #1E1E1E;
+      border-radius: 16px;
+      overflow: hidden;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .app-thumbnail {
+      max-width: 100%;
+      height: 200px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .download-btn {
+      margin-top: 10px;
+      display: inline-block;
+      background: #25D366;
+      padding: 10px 20px;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+</style>
+
+<div class="apk-downloader">
+        <div class="apk-header">
+          <h3>APK Downloader</h3>
+          <p>Download APK files safely and securely</p>
+        </div>
+
+        <form class="search-form" id="searchForm">
+          <div class="input-group">
+            <input type="text" class="search-input" id="appQuery" 
+                   placeholder="Search for apps (e.g. WhatsApp, Instagram)" required>
+          </div>
+          <button type="submit" class="search-btn">
+            <i class="fas fa-search"></i> Search APK
+          </button>
+        </form>
+
+        <div class="spinner" id="loadingSpinner"></div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="app-card" id="results">
+          <img src="" class="app-thumbnail" id="appThumbnail">
+          <div class="app-info">
+            <h3 class="app-title" id="appTitle"></h3>
+            <a href="#" class="download-btn" id="downloadLink">
+              <i class="fas fa-download"></i> Download APK
+            </a>
+          </div>
+        </div>
+      </div>
+
+<script>
+// APK search functionality
+      const searchForm = document.getElementById('searchForm');
+      if (searchForm) {
+        searchForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const query = document.getElementById('appQuery').value.trim();
+          if (query) {
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+
+            // Simulate API call (replace with actual API call)
+            setTimeout(() => {
+              document.getElementById('loadingSpinner').style.display = 'none';
+              
+              // This is a simulation - replace with actual API response handling
+              if (query.toLowerCase().includes('whatsapp')) {
+                document.getElementById('appThumbnail').src = 'https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg';
+                document.getElementById('appTitle').textContent = 'WhatsApp Messenger';
+                document.getElementById('downloadLink').href = '#';
+                document.getElementById('results').style.display = 'block';
+              } else {
+                document.getElementById('errorMessage').textContent = 'APK not found. Please try another app.';
+                document.getElementById('errorMessage').style.display = 'block';
+              }
+            }, 1500);
+          }
+        });
+      }
+</script>
+</body>
+</html>
